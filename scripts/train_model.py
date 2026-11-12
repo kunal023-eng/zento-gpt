@@ -20,18 +20,21 @@ def main():
     val_ids = torch.from_numpy(np.load(data_dir / "val.npy")).long()
     tok = Tokenizer.load(data_dir / "tokenizer.pkl")
 
-    model = GPT(vocab_size=tok.vocab_size, n_embd=64, head_size=64, block_size=64)
+    model = GPT(
+        vocab_size=tok.vocab_size,
+        n_embd=128, n_head=4, n_layer=4, block_size=64, dropout=0.1,
+    )
     print(f"device {device}  params {sum(p.numel() for p in model.parameters())}")
 
     train(
         model, train_ids, val_ids, device,
-        steps=3000, batch_size=32, block_size=64, lr=3e-3, eval_every=500,
-        save_path=str(root / "experiment" / "gpt1.pt"),
+        steps=5000, batch_size=32, block_size=64, lr=1e-3, eval_every=500,
+        save_path=str(root / "experiment" / "gpt2.pt"),
     )
 
     print("\nsample:")
     start = torch.zeros((1, 1), dtype=torch.long, device=device)
-    out = model.generate(start, 300)
+    out = model.generate(start, 500)
     print(tok.decode(out[0].tolist()))
 
 
