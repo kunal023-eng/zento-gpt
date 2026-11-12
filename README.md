@@ -18,6 +18,52 @@ Sample output looks like this:
 Names and structure are right, grammar is rough. That is expected for a
 small model on 1MB of text.
 
+## Example prompts and outputs
+
+Different prompts, different continuations:
+
+    $ uv run scripts/generate.py --prompt "ROMEO:" --tokens 150
+
+    ROMEO:
+    His quickens one.
+
+    GREEN:
+    Nor what beged a man face that beggd state seving.
+
+    MENENIUS:
+    What with he's to thy romb royal to safety,
+    But this taking: will that close shings with eyes,
+
+    $ uv run scripts/generate.py --prompt "JULIET:" --tokens 150
+
+    JULIET:
+    Whether it should out know, sir, know your shades,
+    Will upon thee man. I say gave you:
+    The hath scarce to so my wars never weak poff their werear
+    Forted voices friendship aspieal thee fast.
+
+    $ uv run scripts/generate.py --prompt "KING:" --tokens 80
+
+    KING: the curse; Which thou to say, which a ginden.
+
+    Tellmenge:
+    He tribune nobth pois
+
+    $ uv run scripts/generate.py --prompt "MARCIUS:" --tokens 100
+
+    MARCIUS:
+    Ah?
+
+    Clown:
+    We will one the elderit of my pightors.
+
+    Fighty shall bear speak, but straights
+
+The model learned that lines ending in `NAME:` are dialogue, so it continues
+with new speaker tags and new lines. For non-character-name prompts it still
+writes in the same style, which means it picked up the format of the training
+data, not the content.
+
 ## Setup
 
     uv sync
@@ -30,8 +76,8 @@ Torch is pinned to CPU so it runs on any laptop without CUDA.
     uv run scripts/train_model.py
     uv run scripts/generate.py --prompt "ROMEO:" --tokens 300
 
-The checkpoint goes to `experiment/gpt2.pt` (not committed, takes a few
-seconds to retrain if lost).
+The checkpoint goes to `experiment/gpt2.pt`. Not committed. To retrain,
+just run `scripts/train_model.py` again (about 20 minutes on CPU).
 
 ## Structure
 
